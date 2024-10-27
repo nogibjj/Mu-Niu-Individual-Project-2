@@ -67,7 +67,8 @@ pub fn read(db_path: &str) -> Result<(), Box<dyn std::error::Error>> {
     let conn = rusqlite::Connection::open(db_path)?;
 
     // Execute the query and fetch the results.
-    let mut stmt = conn.prepare("SELECT student_id, name, attendance_rate, final_grade FROM data")?;
+    let mut stmt =
+        conn.prepare("SELECT student_id, name, attendance_rate, final_grade FROM data")?;
     let rows = stmt.query_map([], |row| {
         Ok((
             row.get::<_, i32>("student_id")?,
@@ -80,7 +81,10 @@ pub fn read(db_path: &str) -> Result<(), Box<dyn std::error::Error>> {
     // Print the results.
     for row_result in rows {
         let (student_id, name, attendance_rate, final_grade) = row_result?;
-        println!("{}, {}, {}, {}", student_id, name, attendance_rate, final_grade);
+        println!(
+            "{}, {}, {}, {}",
+            student_id, name, attendance_rate, final_grade
+        );
     }
 
     Ok(())
@@ -114,7 +118,10 @@ pub fn update(
 pub fn delete(db_path: &str, student_id: i32) -> Result<()> {
     let conn = Connection::open(db_path)?;
 
-    conn.execute("DELETE FROM data WHERE student_id = ?1", params![student_id])?;
+    conn.execute(
+        "DELETE FROM data WHERE student_id = ?1",
+        params![student_id],
+    )?;
 
     Ok(())
 }

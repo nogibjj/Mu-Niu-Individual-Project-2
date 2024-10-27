@@ -1,4 +1,4 @@
-use psr::{extract, transform, create, read, update, delete};
+use psr::{create, delete, extract, read, transform, update};
 use std::fs;
 
 fn main() {
@@ -27,7 +27,7 @@ fn main() {
         Ok(_) => println!("Successfully read from the SQLite DB."),
         Err(e) => println!("Error occurred while reading data: {}", e),
     }
-    
+
     println!();
 
     match update("student_performanceDB.db", 11, "Linxi", 100, 110) {
@@ -39,12 +39,15 @@ fn main() {
         Ok(_) => println!("Successfully read from the SQLite DB."),
         Err(e) => println!("Error occurred while reading data: {}", e),
     }
-    
+
     println!();
 
     let student_id_to_delete = 1;
     match delete(db_path, student_id_to_delete) {
-        Ok(_) => println!("Successfully deleted data for student {}.", student_id_to_delete),
+        Ok(_) => println!(
+            "Successfully deleted data for student {}.",
+            student_id_to_delete
+        ),
         Err(e) => println!("An error occurred: {}", e),
     }
 
@@ -52,6 +55,6 @@ fn main() {
         Ok(_) => println!("Successfully read from the SQLite DB."),
         Err(e) => println!("Error occurred while reading data: {}", e),
     }
-    
+
     println!();
 }

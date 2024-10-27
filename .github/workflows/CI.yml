@@ -1,45 +1,44 @@
 name: CI
-
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
   pull_request:
-    branches:
-      - main
+    branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
-    env:
-      WORKING_DIR: psr
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-
-    - name: Install Rust
-      uses: actions-rs/toolchain@v1
+    - uses: actions/checkout@v3
+    - uses: actions-rs/toolchain@v1
       with:
-        toolchain: stable
-        override: true
+          toolchain: stable
+          profile: minimal
+          components: clippy, rustfmt
+          override: true
 
-    - name: Check
-      run: make -C psr check
+    - name: Check Rust versions
+      run: make rust-version
 
+    - name: Install Dependencies
+      run: make install
 
-    - name: Format
-      run: make -C psr format
+    - name: Build Rust
+      run: make release
 
-    - name: Test
-      run: make -C psr test
+    - name: Format the Code
+      run: make format
 
-    - name: Release
-      run: make -C psr release
+    - name: Make Lint
+      run: make lint
 
-    - name: Upload Binary Artifact
-      uses: actions/upload-artifact@v4 #v3 is scheduled for deprecation Nov 30 2024 check marketplace
+    - name: Make Test
+      run: make test
+
+    - name: Archive Binary
+      uses: actions/upload-artifact@v2
       with:
         name: release-binary
-        path: ${{ env.WORKING_DIR }}/target/release/psr
+        path: psr/target/release/psr

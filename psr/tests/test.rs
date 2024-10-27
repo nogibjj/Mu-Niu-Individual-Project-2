@@ -3,9 +3,9 @@ extern crate lazy_static;
 
 #[cfg(test)]
 mod tests {
+    use psr::{create, delete, extract, read, transform, update};
     use rusqlite::params;
     use rusqlite::Connection;
-    use psr::{create, delete, extract, read, transform, update};
     use std::fs;
     use std::sync::Once;
 
@@ -16,8 +16,8 @@ mod tests {
     #[test]
     fn test_extract() {
         // Define test URL and save path.
-        let test_url = "https://github.com/nogibjj/IDS706-Individual-Project-2-sp699/raw/main/rust-cli-binary/test_flights.csv"; // This URL is an example. Please replace with an actual accessible URL.
-        let test_path = "test_flights.csv";
+        let test_url = "https://raw.githubusercontent.com/nogibjj/Mu-Niu-Individual-Project-2/refs/heads/main/psr/tests/test.csv";
+        let test_path = "test.csv";
 
         // Execute the extract function.
         let result = extract(test_url, test_path);
@@ -36,8 +36,8 @@ mod tests {
     #[test]
     fn test_transform() {
         // Create sample CSV data.
-        let csv_path = "test_flights.csv";
-        let db_path = "test_flightsDB.db";
+        let csv_path = "test.csv";
+        let db_path = "testDB.db";
 
         // Execute the transform function.
         let result = transform(csv_path, db_path);
@@ -52,36 +52,36 @@ mod tests {
 
     #[test]
     fn test_create() {
-        let db_path = "test_flightsDB.db";
+        let db_path = "testDB.db";
 
         // Create data in the database.
-        let result = create(db_path, 2023, "March", 200);
+        let result = create(db_path, 300, "Oliver", 20, 100);
         assert!(result.is_ok(), "Create function failed with {:?}", result);
 
         // Verify the created data.
         let conn = Connection::open(db_path).unwrap();
-        let passengers: i32 = conn
+        let final_grade: i32 = conn
             .query_row(
-                "SELECT passengers FROM data WHERE year = 2023 AND month = 'March'",
+                "SELECT final_grade FROM data WHERE student_id = 300 AND name = 'Oliver' AND attendance_rate = 20",
                 params![],
                 |row| row.get(0),
             )
             .unwrap();
-        assert_eq!(passengers, 200);
+        assert_eq!(final_grade, 100);
     }
 
     #[test]
     fn test_read() {
-        let db_path = "test_flightsDB.db";
+        let db_path = "testDB.db";
 
         let conn = Connection::open(db_path).unwrap();
         conn.execute(
-            "CREATE TABLE IF NOT EXISTS data (year INTEGER, month TEXT, passengers INTEGER)",
+            "CREATE TABLE IF NOT EXISTS data (student_id INTEGER, name TEXT, attendance_rate INTEGER, final_grade INTEGER)",
             [],
         )
         .unwrap();
         conn.execute(
-            "INSERT INTO data (year, month, passengers) VALUES (2023, 'April', 250)",
+            "INSERT INTO data (student_id, name, attendance_rate, final_grade) VALUES (400, 'Paul', 24, 13)",
             [],
         )
         .unwrap();
@@ -93,57 +93,57 @@ mod tests {
 
     #[test]
     fn test_update() {
-        let db_path = "test_flightsDB.db";
+        let db_path = "testDB.db";
         let conn = Connection::open(db_path).unwrap();
         conn.execute(
-            "CREATE TABLE IF NOT EXISTS data (year INTEGER, month TEXT, passengers INTEGER)",
+            "CREATE TABLE IF NOT EXISTS data (student_id INTEGER, name TEXT, attendance_rate INTEGER, final_grade INTEGER)",
             [],
         )
         .unwrap();
         conn.execute(
-            "INSERT INTO data (year, month, passengers) VALUES (2023, 'May', 300)",
+            "INSERT INTO data (student_id, name, attendance_rate, final_grade) VALUES (500, 'George', 24, 8)",
             [],
         )
         .unwrap();
 
         // Update data in the database.
-        let result = update(db_path, 2023, "May", 350);
+        let result = update(db_path, 500, "George", 24, 29);
         assert!(result.is_ok(), "Update function failed with {:?}", result);
 
         // Verify the updated data.
-        let passengers: i32 = conn
+        let student_id: i32 = conn
             .query_row(
-                "SELECT passengers FROM data WHERE year = 2023 AND month = 'May'",
+                "SELECT student_id FROM data WHERE name = 'George' AND attendance_rate = 24 AND final_grade = 29",
                 params![],
                 |row| row.get(0),
             )
             .unwrap();
-        assert_eq!(passengers, 350);
+        assert_eq!(student_id, 500);
     }
 
     #[test]
     fn test_delete() {
-        let db_path = "test_flightsDB.db";
+        let db_path = "testDB.db";
         let conn = Connection::open(db_path).unwrap();
         conn.execute(
-            "CREATE TABLE IF NOT EXISTS data (year INTEGER, month TEXT, passengers INTEGER)",
+            "CREATE TABLE IF NOT EXISTS data (student_id INTEGER, name TEXT, attendance_rate INTEGER, final_grade INTEGER)",
             [],
         )
         .unwrap();
         conn.execute(
-            "INSERT INTO data (year, month, passengers) VALUES (2023, 'June', 400)",
+            "INSERT INTO data (student_id, name, attendance_rate, final_grade) VALUES (600, 'Coop', 2, 31)",
             [],
         )
         .unwrap();
 
         // Delete data from the database.
-        let result = delete(db_path, 2023);
+        let result = delete(db_path, 600);
         assert!(result.is_ok(), "Delete function failed with {:?}", result);
 
         // Verify the data was properly deleted.
         let count: i32 = conn
             .query_row(
-                "SELECT COUNT(*) FROM data WHERE year = 2023",
+                "SELECT COUNT(*) FROM data WHERE student_id = 600",
                 params![],
                 |row| row.get(0),
             )

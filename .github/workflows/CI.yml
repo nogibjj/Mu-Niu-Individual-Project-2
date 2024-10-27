@@ -26,16 +26,16 @@ jobs:
         override: true
 
     - name: Lint
-      run: make lint
+      run: make -C psr lint
 
     - name: Format
-      run: make format
+      run: make -C psr format
 
     - name: Test
-      run: make test
+      run: make -C psr test
 
     - name: Release
-      run: make release
+      run: make -C psr release
 
     - name: Upload Binary Artifact
       uses: actions/upload-artifact@v4 #v3 is scheduled for deprecation Nov 30 2024 check marketplace

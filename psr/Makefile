@@ -8,16 +8,16 @@ rust-version:
 
 
 release:
-	cd psr && cargo build --release
+	cargo build --release
 
 format:
-	cd psr && cargo fmt --quiet
+	cargo fmt --quiet
 
 lint:
-	cd psr && cargo clippy --quiet
+	cargo clippy --quiet
 
 run:
-	cd psr && cargo run
+	cargo run
 
 test:
-	cd psr && cargo test --quiet
+	cargo test --quiet

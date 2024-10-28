@@ -32,7 +32,7 @@ Dependencies are specified in `Cargo.toml`, and installed using `cargo build --r
 
 
 ### Demo Video
-A video walkthrough of setting up and using the Rust CLI Binary will be available at the following link. _(To be updated)_
+https://youtu.be/STeghuCLDBY
 
 
 ### Binary Download Link

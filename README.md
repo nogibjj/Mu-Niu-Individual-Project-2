@@ -1,34 +1,40 @@
-# Rust Project
+[![CI](https://github.com/nogibjj/Mu-Niu-Individual-Project-2/actions/workflows/CI.yml/badge.svg)](https://github.com/nogibjj/Mu-Niu-Individual-Project-2/actions/workflows/CI.yml)
+
+## Mu-Niu-Individual-Project-2
+
+### Dataset
+
+This student performance dataset records student id,student name, their attendance rate,and their final_grade.
+
+### Functionalities
+- **lib.rs**
+  - `extract`: Reads the CSV file.
+  - `transform`: Converts CSV data for database storage.
+  - `create`, `read`, `update`, `delete`: Perform CRUD operations.
+
+- **main.rs**: Extracts CSV data, converts to database, and performs CRUD.
+
+- **test.rs**: Tests all CRUD functions.
+
+### Install Dependencies
+Dependencies are specified in `Cargo.toml`, and installed using `cargo build --release`.
 
 
-## Project Structure
+### Use of LLM
+- Debugging code issues and setting up configurations.
+- Refine `README` file
 
-- **psr/src/main.rs**: The main script that uses the library functions and outputs results.
-- **psr/src/lib.rs**: Contains core functions like create/drop table, load data and execute queries.
-- **Makefile**: Automates tasks like building, testing, and linting.
-- **Cargo.toml**: Project dependencies and settings for Rust.
-
-
-
-  
-## Automated Tasks
-
-  - `make build`: Compiles the Rust code.
-  - `make test`: Runs the tests in `lib.rs`.
-  - `make lint`: Lints the code using `cargo clippy`.
-  - `make format`: Formats code using `cargo fmt`.
-
-Below is an image showing tools used for this project, including check, format, lint, test, release, and a help menu for the CLI tool.
-
-![Alt text](data/workflow.png)
+### GitHub Actions
+- **Test**: Test SQLite CRUD with `cargo test --quiet`.
+- **Run**: Run code with `cargo run`.
+- **Format**: Format code with `cargo fmt --quiet`.
+- **Lint**: Check code with `cargo clippy --quiet`.
 
 
-In order to use our CLI normally, we have to run this in our terminal:
+### Demo Video
+A video walkthrough of setting up and using the Rust CLI Binary will be available at the following link. _(To be updated)_
 
-```{r}
-export PATH=$PATH:/PATH TO YOUR REPO/sqlite/target/release
-```
 
-#### Binary Download Link
+### Binary Download Link
 
-https://github.com/nogibjj/Mu-Niu-Python-Script-Rust/actions/runs/11493330152/artifacts/2097270549
+https://github.com/nogibjj/Mu-Niu-Individual-Project-2/actions/runs/11543659030/artifacts/2109679812
